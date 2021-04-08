@@ -1,0 +1,33 @@
+.app{
+    background-color: #f6f6f6;
+}
+.container-info{
+    display: flex;
+    flex-direction: column;
+    background-color: var(--white-color);
+    padding-bottom: 50px;
+}
+.row-info{
+    display: flex;
+    flex-direction: column;
+}
+
+.info-label{
+    font-size: 1.8rem;
+    
+}
+
+.info-product{
+    display: flex;
+    align-items: center;
+}
+
+.product-title{
+    display: flex;
+    align-items: center;
+
+}
+
+.product-value{
+
+}
