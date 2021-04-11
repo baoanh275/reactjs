@@ -1,6 +1,27 @@
 import React, { Component } from 'react';
 import HeaderNotify from './HeaderNotify/HeaderNotify'
 import Cart from './Cart/Cart'
+import {Link,Route} from 'react-router-dom'
+
+const HeaderItem =[
+    {
+        name : 'Trang chủ',
+        to : '/',
+        exact : true
+    },
+    {
+        name : 'Trang chủ',
+        to : '/',
+        exact : false
+    },
+    {
+        name : 'Trang chủ',
+        to : '/',
+        exact : false
+    }
+]
+
+
 
 class HeaderTop extends Component {
     render() {
