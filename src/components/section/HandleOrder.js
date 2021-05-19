@@ -21,14 +21,22 @@ function HandleOrder(props) {
     const [checkout, setCheckOut] = useState(false);
 
     useEffect(()=>{
-        const order = JSON.parse(localStorage.getItem('order'));
-        setOrders(order)
+        
+        async function setOrdersss(){
+             var order = await JSON.parse(localStorage.getItem('order'));
+            await setOrders(order);
+           
+        }
+        
+        setOrdersss()
+       
         
         
         
     },[])
     useEffect(()=> {
         getCartID()
+        
     },[orders])
     
     return (
@@ -88,16 +96,8 @@ function HandleOrder(props) {
                             <input type="text" className="form-control form-control-lg" defaultValue="" id="quantity" name="quantity" />
                         </div> */}
                        
-                        
-                        <div className="form-group">
-                            <label htmlFor="cartID" class="label-form">Cart ID</label>
-                            <input 
-                                type="text" 
-                                disabled={true} 
-                                value={1}
-                                className="form-control form-control-lg" defaultValue=""  name="cartIds" 
-                            />
-                        </div>
+                        {showCartID()}
+
                         <div className="d-flex justify-content-center">
                         {checkout ? (
                                 <Paypal />
@@ -116,7 +116,23 @@ function HandleOrder(props) {
         </div>
 
     );
-
+    function showCartID(){
+        var result=null;
+        if(orders.length > 0){
+            result = orders.map((product,index) => {
+                return  <div className="form-group">
+                            <label htmlFor="cartID" class="label-form">Cart ID</label>
+                            <input 
+                                type="text" 
+                                disabled={true} 
+                                value={product._id}
+                                className="form-control form-control-lg" defaultValue=""  name="cartIds" 
+                            />
+                        </div>
+            })
+        }
+        return result;
+    }
     function getCartID(){
         var result=[];
 
@@ -134,7 +150,12 @@ function HandleOrder(props) {
             setTotal(res);
         }
         getTotal();
-        setCartid(result)
+        
+       async function setCartIDDD(){
+            await setCartid(result)
+        }
+        
+        setCartIDDD()
         
         
         
@@ -142,8 +163,6 @@ function HandleOrder(props) {
     }
 
     function onHandleOrder(){
-
-
         const data = {
             name : name,    
             address : address,

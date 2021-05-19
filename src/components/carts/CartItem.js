@@ -204,28 +204,24 @@ export default function CartItem() {
             const data2 = {
                 orderIds : cartbuy
             }
-            postApi('api/orders/handle/create',data2).then(res => {
-                console.log(res);
-                localStorage.setItem('order',JSON.stringify(res.data))
+           async function postt(){
 
-            }).catch(err => {
-                console.log(err)
-            })
-           /*  axios.post('http://localhost:3001/api/orders/handle/create',{
-                withCredentials: true,
-                data : {
-                    orderIds : cartbuy
-                }
-            }).then(res =>{
-                console.log(res);
-                if (res) setCart(res.data)
-               
+              await postApi('api/orders/handle/create',data2).then(  res => {
+                   console.log(res);
+                   const res1 =  res;
+                   localStorage.setItem('order',JSON.stringify(res.data))
+   
+               }).catch(err => {
+                   console.log(err)
+               })
 
-            }).catch(err => {
-                console.log(err)
-            }) */
+               await navigate('/buyer/cart/handle')
 
-            navigate('/buyer/cart/handle')
+           }
+
+            postt()
+        
+             
         }
         function onHandleDelete(id){
             removeProduct(id)

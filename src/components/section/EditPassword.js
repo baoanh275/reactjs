@@ -1,6 +1,43 @@
-import React from 'react';
-import {Link} from 'react-router-dom'
-function EditPassword(props) {
+import React, { useContext, useEffect, useState } from 'react';
+import {Link}  from 'react-router-dom'
+import {DataContext} from './../DataProvider'
+import {getApi,putApi} from './../utils/apiCaller'
+
+function EditPassword() {
+
+    const value = useContext(DataContext);
+    const [userinfo,setUserinfo] = value.userinfo;
+
+    const [username,setUsername] = useState('');
+  
+    const [password,setPassword] = useState('');
+    const [repassword,setRepassword] = useState('');
+    useEffect(() =>{
+        async function getUserInfo(){
+
+            await getApi('api/buyers/info').then(res =>{
+                 console.log(res);
+                 /* const userInfo = res.data; */
+                 /* localStorage.setItem('userinfo',JSON.stringify(userInfo)) */
+                  setUserinfo(res.data);
+                 
+ 
+             }).catch(err => {
+                 console.log(err)
+             })
+         }
+
+         getUserInfo();
+        
+        
+    },[])
+
+    useEffect(() =>{
+        setUsername(userinfo.username);
+        
+
+    },[userinfo])
+
     return (
         <div className="container-fluid app-content">
             <div className="row app-content0">
@@ -61,24 +98,48 @@ function EditPassword(props) {
                                     <div className="form-group row">
                                         <label htmlFor="inputEmail3" className="col-sm-2 col-form-label col-form-label-lg">Email</label>
                                         <div className="col-sm-7">
-                                            <input type="email" className="form-control form-control-lg" id="inputEmail3" placeholder="Email" />
+                                            <input 
+                                                type="email" 
+                                                className="form-control form-control-lg" 
+                                                id="inputEmail3" placeholder="Email"
+                                                disabled={true}
+
+                                                value={username}
+
+                                            />
                                         </div>
                                     </div>
                                     <div className="form-group row">
                                         <label htmlFor="inputEmail3" className="col-sm-2 col-form-label col-form-label-lg">Mật khẩu hiện tại</label>
                                         <div className="col-sm-7">
-                                            <input type="password" className="form-control form-control-lg" id="inputPasswordl3" placeholder />
+                                            <input 
+                                                type="password" 
+                                                className="form-control form-control-lg" 
+                                                id="inputPasswordl3" placeholder="nhập mật khẩu mới" 
+                                                value = {password}
+                                                onChange = {e =>setPassword(e.target.value)}
+                                            />
                                         </div>
                                     </div>
                                     <div className="form-group row">
                                         <label htmlFor="inputEmail3" className="col-sm-2 col-form-label col-form-label-lg">Mật khẩu mới</label>
                                         <div className="col-sm-7">
-                                            <input type="password" className="form-control form-control-lg" id="inputPasswordl3" placeholder />
+                                            <input 
+                                                type="password" 
+                                                className="form-control form-control-lg" 
+                                                id="inputPasswordl3" placeholder="nhập lại mật khẩu mới"
+                                                value={repassword}
+                                                onChange={e =>setRepassword(e.target.value)}
+                                            />
                                         </div>
                                     </div>
                                     <div className="form-group row  d-flex justify-content-center">
                                         <div className="col-sm-7 d-flex justify-content-center">
-                                            <button type="submit" className="btn1 btn--primary">Lưu</button>
+                                            <button 
+                                                type="submit" 
+                                                className="btn1 btn--primary"
+                                                onClick = {onHandleSubmit}
+                                            >Lưu</button>
                                         </div>
                                     </div>
                                 </form>
@@ -90,6 +151,36 @@ function EditPassword(props) {
         </div>
 
     );
+
+
+    function onHandleSubmit(){
+
+        if(password === repassword)
+        {
+
+            const data = {
+                ...userinfo,
+                password
+            }
+    
+            async function putt(){
+    
+               await putApi(`api/buyers/${userinfo._id}`,data).then(res =>{
+                     console.log(res);
+                     if(res) alert('Đổi mật khẩu thành công')
+                }).catch(err => {
+                    console.log(err)
+                })
+            }
+            putt()
+        }
+        else {
+            alert('Mật khẩu không khớp')
+        }
+    
+
+      
+    }
 }
 
 export default EditPassword;

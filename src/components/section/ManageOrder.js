@@ -7,7 +7,19 @@ function ManageOrder() {
     const [orders,setOrders] = useState([]);
 
     useEffect(()=>{
+        async function getOrders(){
 
+            await getApi('api/orders/show').then(res =>{
+                 console.log(res);
+                 setOrders(res.data)
+                 
+ 
+             }).catch(err => {
+                 console.log(err)
+             })
+         }
+
+         getOrders();
     },[])
 
     return (
@@ -133,8 +145,8 @@ function ManageOrder() {
                                             <col width={200} span={1} />
                                             <col width={300} span={1} />
                                             <col width={100} span={1} />
-                                            <col width={90} span={1} />
                                             <col width={200} span={1} />
+                                            <col width={90} span={1} />
                                             <col width={60} span={1} />
                                           
                                         </colgroup>
@@ -150,15 +162,15 @@ function ManageOrder() {
                                                 <i className="fas fa-sort" />
                                             </th>
                                             <th scope="col">
-                                                Số lượng
-                                                <i className="fas fa-sort" />
-                                            </th>
-                                            <th scope="col">
                                                 Tổng tiền
                                                 <i className="fas fa-sort" />
                                             </th>
                                             <th scope="col">
                                                 Địa chỉ giao hàng
+                                                <i className="fas fa-sort" />
+                                            </th>
+                                            <th scope="col">
+                                                Thời gian tạo
                                                 <i className="fas fa-sort" />
                                             </th>
                                             <th scope="col">
@@ -188,17 +200,27 @@ function ManageOrder() {
 
     function showOrder(){
         var result =null;
+        
         if(orders.length > 0)
         {
+
             result = orders.map((product,index) => {
+                var resultName = null;
+                function showProductName() {
+                    resultName = product.products.map(prod => {
+                        return prod.tittle + ', '
+                    })
+                    return resultName;
+                
+                }
                 return <tr className="text-center">
-                            <td >1</td>
-                            <td>Mark</td>
-                            <td>Otto</td>
-                            <td>@mdo</td>
-                            <td>@mdo</td>
-                            <td>@mdo</td>
-                            <td>@mdo</td>
+                            <td >{index}</td>
+                            <td>{product._id}</td>
+                            <td>{showProductName()}</td>
+                            <td>{product.payment}</td>
+                            <td>{product.address}</td>
+                            <td>{product.createdAt}</td>
+                            <td>{product.status}</td>
                         </tr>
             })
 

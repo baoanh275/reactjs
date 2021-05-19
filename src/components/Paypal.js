@@ -1,6 +1,8 @@
 import React, { useRef, useEffect, useContext,useState } from "react";
 import {useNavigate} from 'react-router-dom'
 import {DataContext} from './DataProvider';
+import {putApi,postApi,getApi,deleteApi} from './utils/apiCaller'
+import axios from 'axios';
 
 
 export default function Paypal() {
@@ -43,7 +45,30 @@ export default function Paypal() {
           const order = await actions.order.capture();
           console.log(order);
           if(order.status ==="COMPLETED") {
-              navigate('/buyer/info/manageorder/all')
+            
+              /* navigate('/buyer/info/manageorder/all') */
+             async function post(){
+               var data2 = {
+                 ...payorders,
+                 paymentId : order.id
+               }
+              
+               await axios.post('http://localhost:3001/api/orders/storemany',{
+                
+                data : data2
+              },{withCredentials: true}).then(res => {
+                console.log(res)
+              }).catch(err => {
+                console.log(err);
+              })
+/*                 await postApi('api/orders/storemany',data2).then(res => {
+                  console.log(res)
+                }).catch(err => {
+                  console.log(err);
+                }) */
+              }
+
+              post();
           }
          
         },

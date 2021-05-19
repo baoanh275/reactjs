@@ -1,7 +1,8 @@
-import axios from 'axios';
+
 import React, { useContext, useEffect, useState } from 'react';
 import {Link}  from 'react-router-dom'
 import {DataContext} from './../DataProvider'
+import {getApi,putApi} from './../utils/apiCaller'
 
 function Profile(props) {
    
@@ -10,14 +11,35 @@ function Profile(props) {
 
     const [username,setUsername] = useState('');
     const [name,setName] = useState('');
+    const [address,setAddress] = useState('');
     const [phone,setPhone] = useState('');
     useEffect(() =>{
-        setName(`${userinfo.buyername}`)
-        setPhone(`${userinfo.phone}`)
-        setUsername(`${userinfo.username}`)
+        async function getUserInfo(){
+
+            await getApi('api/buyers/info').then(res =>{
+                 console.log(res);
+                 /* const userInfo = res.data; */
+                 /* localStorage.setItem('userinfo',JSON.stringify(userInfo)) */
+                  setUserinfo(res.data);
+                 
+ 
+             }).catch(err => {
+                 console.log(err)
+             })
+         }
+
+         getUserInfo();
         
         
     },[])
+
+    useEffect(() =>{
+        setName(userinfo.buyername);
+        setPhone(userinfo.phone);
+        setUsername(userinfo.username);
+        setAddress(userinfo.address);
+
+    },[userinfo])
     
     return (
         <div className="container-fluid app-content">
@@ -102,31 +124,19 @@ function Profile(props) {
                                             />
                                         </div>
                                     </div>
-                                    <fieldset className="form-group">
-                                        <div className="row">
-                                            <legend className="col-form-label col-sm-2 pt-0">Giới tính</legend>
-                                            <div className="col-sm-7">
-                                                <div className="form-check">
-                                                    <input className="form-check-input" type="radio" name="gridRadios" id="gridRadios1" defaultValue="option1" defaultChecked />
-                                                    <label className="form-check-label" htmlFor="gridRadios1">
-                                                        Nam
-                                                    </label>
-                                                </div>
-                                                <div className="form-check">
-                                                    <input className="form-check-input" type="radio" name="gridRadios" id="gridRadios2" defaultValue="option2" />
-                                                    <label className="form-check-label" htmlFor="gridRadios2">
-                                                        Nữ
-                                                    </label>
-                                                </div>
-                                                <div className="form-check disabled">
-                                                    <input className="form-check-input" type="radio" name="gridRadios" id="gridRadios3" defaultValue="option3" disabled />
-                                                    <label className="form-check-label" htmlFor="gridRadios3">
-                                                        Khác
-                                                    </label>
-                                                </div>
-                                            </div>
+                                    <div className="form-group row">
+                                        <label htmlFor="inputPassword3" className="col-sm-2 col-form-label">Địa chỉ</label>
+                                        <div className="col-sm-7">
+                                            <input 
+                                                type="text" 
+                                                className="form-control" 
+                                                id="inputPhoneNumber3" 
+                                                placeholder="Địa chỉ" 
+                                                value = {address}
+                                                onChange = {e => setAddress(e.target.value)}
+                                            />
                                         </div>
-                                    </fieldset>
+                                    </div>
                                     <div className="form-group row">
                                         <label htmlFor="inputEmail3" className="col-sm-2 col-form-label col-form-label-lg">Email</label>
                                         <div className="col-sm-7">
@@ -169,17 +179,26 @@ function Profile(props) {
 
     function onHandleSubmit(){
 
-        setUserinfo({
+        const data = {
             ...userinfo,
             username,
             buyername : name,
-            phone
+            phone,
+            address
 
-        })
+        }
 
-        /* axios.put(
+        async function putt(){
 
-        ) */
+           await putApi(`api/buyers/${userinfo._id}`,data).then(res =>{
+                 console.log(res);
+                 if(res) alert(res.data.message)
+            }).catch(err => {
+                console.log(err)
+            })
+        }
+        putt()
+    
 
       
     }
