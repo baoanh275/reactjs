@@ -1,14 +1,13 @@
-import React, { useRef, useEffect, useContext,useState } from "react";
+import React, { useRef, useEffect, useContext } from "react";
 import {useNavigate} from 'react-router-dom'
 import {DataContext} from './DataProvider';
-import {putApi,postApi,getApi,deleteApi} from './utils/apiCaller'
 import axios from 'axios';
 
 
 export default function Paypal() {
     const navigate = useNavigate();
     const value = useContext(DataContext);
-    const [payorders,setPayorders] = value.payorders;
+    const [payorders] = value.payorders;
     const paypal = useRef();
 
   useEffect(() => {
@@ -69,6 +68,8 @@ export default function Paypal() {
               }
 
               post();
+
+              navigate('/')
           }
          
         },

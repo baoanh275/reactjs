@@ -1,16 +1,15 @@
 import React,{useState,useContext} from 'react';
-import {Link, Navigate, useNavigate} from 'react-router-dom'
-import { useCookies } from 'react-cookie';
+import {useNavigate} from 'react-router-dom'
 import { DataContext} from './../DataProvider'
-import {DataCookie} from './../utils/HandleCookie'
-import {setHeaderDefault,getApi, callApi} from './../utils/apiCaller'
+import {setHeaderDefault,getApi} from './../utils/apiCaller'
 import axios from "axios";
 import Cookies from 'universal-cookie';
+
 
 function LoginBuyer() {
 
     const value = useContext(DataContext);
-    const value2 = useContext(DataCookie);
+    
     const [cart] = value.cart;
     const [userinfo,setUserinfo] = value.userinfo;
     let navigate = useNavigate();
@@ -67,10 +66,10 @@ function LoginBuyer() {
                         <label>Quên mật khẩu?</label>
                     </div>
                     <div className="form-group d-flex justify-content-center">
-                        <button className="btn1 btn--highlight " type="button" data-dismiss="modal">Trở lại</button>
+                        <button className="btn1 btn--highlight btn-register" type="button" data-dismiss="modal">Trở lại</button>
                         <button 
                             type="button" 
-                            className="btn1 btn--primary form-btn-submit"
+                            className="btn1 btn--primary form-btn-submit btn-register"
                             onClick={handleLogin}
                         >Đăng nhập</button>
                     </div>
@@ -100,7 +99,7 @@ function LoginBuyer() {
           
             console.log(response);
 
-            if(response.request.status == "200" || response.request.status == "202" ){
+            if(response.status == "200" || response.status == "202" ){
 
                 localStorage.setItem('buyer',JSON.stringify(response.data.cookie))  
                
@@ -112,9 +111,12 @@ function LoginBuyer() {
 
                await getApi('api/buyers/info').then(res =>{
                     console.log(res);
-                    /* const userInfo = res.data; */
-                    /* localStorage.setItem('userinfo',JSON.stringify(userInfo)) */
-                    setUserinfo(res.data);
+                    const base64ImagePath = new Buffer.from(res.data.imagePath).toString("base64")
+                    var data = {
+                        info : res.data.userInfo,
+                        imagePath : base64ImagePath
+                    }
+                    setUserinfo(data);
                     
     
                 }).catch(err => {
@@ -124,18 +126,10 @@ function LoginBuyer() {
 
             getUserInfo();
            
-            
-            /* setCookie('userId',response.data.cookie,{
-                maxAge : 360000,
-                path : '/'
-            })    */
-            
-
             cookies.set('userId', response.data.cookie, { path: '/' });
            
             navigate("/");
-                    
-           /*  window.location.reload(); */
+
 
         }).catch(err => {
       

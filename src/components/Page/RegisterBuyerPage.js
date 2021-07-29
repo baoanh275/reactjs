@@ -1,13 +1,14 @@
 import React from 'react';
+import { Outlet } from 'react-router';
 import Footer from '../footer/Footer';
 import Header from '../header/Header';
-import RegisterBuyer from './../register/RegisterBuyer'
+
 
 function RegisterBuyerPage(props) {
     return (
         <React.Fragment>
             <Header/>
-            <RegisterBuyer/>
+            <Outlet/>
             <Footer/>
             
         </React.Fragment>

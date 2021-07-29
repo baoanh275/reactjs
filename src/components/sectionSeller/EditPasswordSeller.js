@@ -1,10 +1,10 @@
 import React, { useContext, useEffect, useState } from 'react';
 import {Link}  from 'react-router-dom'
-import {DataContext} from './../DataProvider'
-import {getApi} from './../utils/apiCaller'
+import {DataContext} from '../DataProvider'
+import {getApi,putApi} from '../utils/apiCaller'
 import axios from 'axios'
 
-function EditPassword() {
+function EditPasswordSeller() {
 
     const value = useContext(DataContext);
     const [userinfo,setUserinfo] = value.userinfo;
@@ -12,26 +12,26 @@ function EditPassword() {
     const [password,setPassword] = useState('');
     const [repassword,setRepassword] = useState('');
 
-
     useEffect(() =>{
-        async function getUserInfo(){
-             await getApi('api/buyers/info').then(res =>{
-                 console.log(res);
-                 const base64ImagePath = new Buffer.from(res.data.imagePath).toString("base64")
-                 var data = {
-                     info : res.data.userInfo,
-                     imagePath : base64ImagePath
-                 }
-                 setUserinfo(data);
-               
-                 
- 
-             }).catch(err => {
-                 console.log(err)
-             })
-         }
+       async function getUserInfo(){
+            await getApi('api/sellers/info').then(res =>{
+                console.log(res);
+                const base64ImagePath = new Buffer.from(res.data.imagePath).toString("base64")
+                var data = {
+                    info : res.data.userInfo,
+                    imagePath : base64ImagePath
+                }
+                setUserinfo(data);
+              
+                
 
-         getUserInfo();
+            }).catch(err => {
+                console.log(err)
+            })
+        }
+
+        getUserInfo();
+        
         
     },[])
 
@@ -49,44 +49,72 @@ function EditPassword() {
     return (
         <div className="container-fluid app-content">
             <div className="row app-content0">
-                <div className="col-2 col1 d-flex align-items-center">
-                    <nav className="category1">
+                <div className="col-2 col1 d-flex">
+                <nav className="category1">
                         <div className="category__info">
-                            <div className="info-image">
-                                <img src={`data:image/jpeg;base64,${Object.values(userinfo).length !== 0 ? userinfo.imagePath : ''}`}  alt="avatar" />
-                            </div>
-                            <div className="info-name">
-                                {Object.values(userinfo).length !== 0 ? userinfo.info.buyername : ''}
-                            </div>
+                        <div className="info-image">
+                            <img src={`data:image/jpeg;base64,${Object.values(userinfo).length !== 0 ? userinfo.imagePath : ''}`}  alt="avatar" />
+                        </div>
+                        <div className="info-name">
+                            {Object.values(userinfo).length !== 0 ? userinfo.info.shopname : ''}
+                        </div>
                         </div>
                         <h3 className="category__heading">
-                            Tải khoản của tôi
+                            Tài khoản của tôi
                         </h3>
                         <ul className="category-list">
                             <li className="category-item">
-                                <Link to='/buyer/info' className="category-item__link">Hồ sơ</Link>
+                                <Link to="/seller/info" className="category-item__link">Hồ sơ</Link>
                             </li>
                             <li className="category-item">
-                                <div className="category-item__link active1">Đổi mật khẩu</div>
+                                <Link to="/seller/info/editpassword" className="category-item__link">Đổi mật khẩu</Link>
                             </li>
                             <li className="category-item">
-                                <Link to='' className="category-item__link">Đơn mua</Link>
+                                <Link to="/seller/info/manageorder/all" className="category-item__link">Đơn mua</Link>
                             </li>
                         </ul>
-            
+                        
                         <h3 className="category__heading">
-                            Quản lý đơn hàng
+                                            Quản lý đơn hàng
                         </h3>
                         <ul className="category-list">
                             <li className="category-item">
-                                <Link to='/buyer/info/manageorder/all' className="category-item__link">Tất cả đơn hàng</Link>
+                                <Link to="/seller/info/manageorder/all" className="active1  category-item__link">Tất cả đơn hàng</Link>
                             </li>
                             <li className="category-item">
-                                <Link to='/buyer/info/manageorder/cancel' className="category-item__link">Đơn huỷ</Link>
+                                <Link to="/seller/info/manageorder/cancel" className="category-item__link">Đơn huỷ</Link>
                             </li>
                             <li className="category-item">
-                                <Link to='/buyer/info/manageorder/refund' className="category-item__link">Trả hàng/Hoàn tiền</Link>
+                                <Link to="/seller/info/manageorder/refund" className="category-item__link">Trả hàng/Hoàn tiền</Link>
                             </li>
+                        </ul>
+
+                        <h3 className="category__heading">
+                            Quản lý sản phẩm
+                        </h3>
+                        <ul className="category-list">
+                            <li className="category-item">
+                                <Link to="/seller/info/manageproduct/all" className="category-item__link">Tất cả sản phẩm</Link>
+                            </li>
+                            <li className="category-item">
+                                <Link to="/seller/info/manageproduct/add" className="category-item__link">Thêm sản phẩm</Link>
+                            </li>
+                            <li className="category-item">
+                                <Link to="/seller/info/manageproduct/active" className="category-item__link">Sản phẩm đang hoạt động</Link>
+                            </li>
+                        </ul>
+
+                        <h3 className="category__heading">
+                            Quản lý doanh thu
+                        </h3>
+                        <ul className="category-list">
+                            <li className="category-item">
+                                <Link to="/seller/info/managerevenue/willpay" className="category-item__link">Sẽ thanh toán</Link>
+                            </li>
+                            <li className="category-item">
+                                <Link to="/seller/info/managerevenue/paid" className="category-item__link">Đã thanh toán</Link>
+                            </li>
+                            
                         </ul>
                     </nav>
                 </div>
@@ -118,7 +146,7 @@ function EditPassword() {
                                         </div>
                                     </div>
                                     <div className="form-group row">
-                                        <label htmlFor="inputEmail3" className="col-sm-2 col-form-label col-form-label-lg">Mật khẩu hiện tại</label>
+                                        <label htmlFor="inputEmail3" className="col-sm-2 col-form-label col-form-label-lg">Mật khẩu mới</label>
                                         <div className="col-sm-7">
                                             <input 
                                                 type="password" 
@@ -130,7 +158,7 @@ function EditPassword() {
                                         </div>
                                     </div>
                                     <div className="form-group row">
-                                        <label htmlFor="inputEmail3" className="col-sm-2 col-form-label col-form-label-lg">Mật khẩu mới</label>
+                                        <label htmlFor="inputEmail3" className="col-sm-2 col-form-label col-form-label-lg">Nhập lại mật khẩu mới</label>
                                         <div className="col-sm-7">
                                             <input 
                                                 type="password" 
@@ -170,19 +198,20 @@ function EditPassword() {
             formData.append('phone', userinfo.info.phone);
             formData.append('avatar', userinfo.info.avatar);
             formData.append('address', userinfo.info.address);
-            formData.append('buyername', userinfo.info.buyername);
+            formData.append('shopname', userinfo.info.shopname);
             formData.append('password', password);
+            formData.append('productsCount', userinfo.info.productsCount);
     
             async function putt(){
     
-               await axios.put(`http://localhost:3001/api/buyers/${userinfo.info._id}`,formData,{
-                withCredentials : true,
-                headers: {
-                    'Content-Type': 'multipart/form-data'
-                }
-            }).then(res =>{
+               await axios.put(`http://localhost:3001/api/sellers/${userinfo.info._id}`,formData,{
+                    withCredentials : true,
+                    headers: {
+                        'Content-Type': 'multipart/form-data'
+                    }
+                }).then(res =>{
                      console.log(res);
-                     if(res) alert(res.data.message)
+                     if(res) alert('Đổi mật khẩu thành công')
                 }).catch(err => {
                     console.log(err)
                 })
@@ -198,4 +227,4 @@ function EditPassword() {
     }
 }
 
-export default EditPassword;
+export default EditPasswordSeller;

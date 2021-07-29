@@ -1,12 +1,9 @@
 
 import CartItem from './CartItem'
-import CartResult from './CartResult'
-import React, { useContext,useState,useEffect } from 'react';
+import React, { useContext,useEffect } from 'react';
 import {DataContext} from './../DataProvider';
-import {setHeaderDefault,getApi, callApi} from './../utils/apiCaller'
 import axios from 'axios';
-import Cookies from 'universal-cookie';
-import CartItem2 from './CartItem2';
+
 
 
 export default function Cart() {

@@ -1,17 +1,16 @@
 import React from 'react';
-import { Outlet } from 'react-router';
 import Footer from '../footer/Footer';
 import Header from '../header/Header';
+import ProfileSeller from '../sectionSeller/ProfileSeller';
 
-
-function ManageOrderPage(props) {
+function ProfilePageSeller(props) {
     return (
         <React.Fragment>
             <Header/>
-            <Outlet/>
+            <ProfileSeller/>
             <Footer/>
         </React.Fragment>
     );
 }
 
-export default ManageOrderPage;
+export default ProfilePageSeller;

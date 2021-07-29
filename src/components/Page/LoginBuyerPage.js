@@ -1,16 +1,17 @@
 import React from 'react';
+import { Outlet } from 'react-router';
 import Footer from '../footer/Footer';
 import Header from '../header/Header';
-import LoginBuyer from '../login/LoginBuyer';
+
 
 function LoginBuyerPage(props) {
     return (
         <React.Fragment>
             <Header/>
-            <LoginBuyer/>
+            <Outlet/>
             <Footer/>
         </React.Fragment>
     );
 }
-
+    
 export default LoginBuyerPage;

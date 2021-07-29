@@ -4,7 +4,7 @@ import Footer from '../footer/Footer';
 import Header from '../header/Header';
 
 
-function ManageOrderPage(props) {
+function SellerManageOrderPage(props) {
     return (
         <React.Fragment>
             <Header/>
@@ -14,4 +14,4 @@ function ManageOrderPage(props) {
     );
 }
 
-export default ManageOrderPage;
+export default SellerManageOrderPage;

@@ -176,3 +176,18 @@
     text-decoration: none;
 }
 
+.form-group-label{
+    font-size: 1.4rem;  
+  
+
+}
+
+.btn-register{
+    margin-top: 0px !important;
+    margin-left: 10px;
+    width: 100px;
+}
+
+label {
+    font-size: 1.6rem;
+}

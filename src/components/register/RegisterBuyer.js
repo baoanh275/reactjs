@@ -1,8 +1,7 @@
-import React,{useState,useContext} from 'react';
-import {Link, Navigate, useNavigate} from 'react-router-dom'
-import { useCookies } from 'react-cookie';
-import { DataContext} from './../DataProvider'
-import axios from "axios";
+import React,{useState} from 'react';
+import {Link, useNavigate} from 'react-router-dom'
+import axios from 'axios'
+
 
 function RegisterBuyer(props) {
 
@@ -10,12 +9,13 @@ function RegisterBuyer(props) {
     const [password,setPassword] = useState('');
     const [repassword,setRepassword] = useState('');
     const [phone,setPhone] = useState('');
+    const navigate = useNavigate()
 
 
     return (
         <div className="grid__full-width app-login">
             <div className="app-login-2">
-                <form className="needs-validation form-register" method="POST" action="/buyer/store" noValidate>
+                <form className="needs-validation form-register"  noValidate>
                     <div className="form-group modal-form-title d-flex justify-content-center">
                         <div className="title-register">Đăng ký</div>
                     </div>
@@ -91,16 +91,31 @@ function RegisterBuyer(props) {
                         </div>
                     </div>
                     <div className="form-group form-group-label">
-                        <p className>Bằng việc đăng kí, bạn đã đồng ý với chúng tôi về
-                        <a href="#" className style={{ color: 'var(--primary-color)' }}>Điều khoản dịch vụ &amp; chính sách bảo mật</a>
-                        </p>
+                        <span >Bằng việc đăng kí, bạn đã đồng ý với chúng tôi về 
+                           
+                        </span>
+                          
+                        <span 
+                            style={
+                                {
+                                    color : '#d80c24',
+                                    marginLeft : '4px'
+                                }
+                            }
+                        >Điều khoản dịch vụ &amp; chính sách bảo mật</span>
                     </div>
                     <div className="form-group d-flex justify-content-end">
-                        <button className="btn1 btn--highlight" type="button" data-dismiss="modal">Trở lại</button>
                         <button
-                            type="button" 
-                            className="btn1 btn--primary"
-                            onClick={onHandleSubmit}
+                            className="btn1 btn--highlight btn-register" 
+                            type="button" data-dismiss="modal"
+                            onClick = {() => {
+                                navigate('/')
+                            }}
+                        >Trở lại</button>
+                        <button
+                            type="button"   
+                            className="btn1 btn--primary btn-register"
+                            onClick={() =>onHandleSubmit()}
                         >Đăng ký</button>
                     </div>
                 </form>
@@ -111,7 +126,33 @@ function RegisterBuyer(props) {
 
     function onHandleSubmit(){
         if(password===repassword){
+            const formData = new FormData();
+            formData.append('phone', phone);
+            formData.append('username', username);
+            formData.append('password', password);
             
+            async function postt(){
+
+                await axios.post(`http://localhost:3001/api/buyers/store`,{
+                 
+                 data : {
+                     'username' : username,
+                     'password' : password,
+                     'confirmpassword' : repassword,
+                     'phone' : phone
+                 }
+             }).then(res =>{
+                      console.log(res);
+                      if(res) alert(res.data.message)
+                      navigate('/login/buyer')
+                 }).catch(err => {             
+                     if(err) alert('Email đã tồn tại')
+                 })
+             }
+             postt()
+        }
+        else{
+            alert('Mật khẩu không khớp')
         }
     }
 }

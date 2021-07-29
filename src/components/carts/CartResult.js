@@ -21,8 +21,8 @@ export default function CartResult() {
    return (
         <div className="cart-page-product-section__buy">
             <div className="total-buy-label">Tổng số tiền:</div>
-            <div className style={{ width: '15%', display: 'flex', alignItems: 'center', padding: '0 20px', color: 'var(--primary-color)', fontSize: '2.2rem', fontWeight: 400 }}>
-                <div className style={{ paddingRight: 2, textDecoration: 'underline' }}>
+            <div  style={{ width: '15%', display: 'flex', alignItems: 'center', padding: '0 20px', color: 'var(--primary-color)', fontSize: '2.2rem', fontWeight: 400 }}>
+                <div  style={{ paddingRight: 2, textDecoration: 'underline' }}>
                     $
                             </div>
                 {/* Tính tổng số tiền xong thay ở đây */}

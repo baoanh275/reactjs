@@ -1,10 +1,11 @@
 import React, {createContext, useEffect, useState} from 'react';
-import CallApi from './utils/apiCaller'
+import {getApi} from './utils/apiCaller'
 
 export const DataContext = createContext();
 
 export default function DataProvider(props) {
     const [products,setProducts] = useState([]);
+    const [imagePath,setImagePath] = useState([]);
 
 
     const [cart,setCart] = useState([])
@@ -51,8 +52,6 @@ export default function DataProvider(props) {
         }
     }
 
-
-
     useEffect(() =>{
         async function fetchProductsAPI(){
             const reqURL = 'http://localhost:3001/api/';
@@ -63,20 +62,35 @@ export default function DataProvider(props) {
                 res.push(responeJSON[i].book);
                 
             }
-
+            console.log(res)
             setProducts(res);
-
-
+        
+            await getApi('api/books/byte').then( response => {
+                var img = response.data;
+                
+                var c= []
+                for(let i=0;i<img.length;i++){
+                    c[i] = {
+                        productID : res[i]._id,
+                        imagePath : img[i]
+                    }
+                }       
+                console.log(c)
+                setImagePath(c)
+                
+               
+            }).catch(err => {
+                console.log(err)
+            })
         }
 
         fetchProductsAPI();
         const dataCart = JSON.parse(localStorage.getItem('dataCart'));
         if(dataCart) setCart(dataCart);
 
-        const userinfo = JSON.parse(localStorage.getItem('userinfo'));
-        if (userinfo) setUserinfo(userinfo);
-     
-        
+        const dataUser = JSON.parse(localStorage.getItem('userinfo'));
+        if(dataUser) setUserinfo(dataUser);
+ 
     },[])
 
     useEffect(() =>{
@@ -84,12 +98,17 @@ export default function DataProvider(props) {
         localStorage.setItem('dataCart',JSON.stringify(cart))
     },[cart])
 
+  
+
     useEffect(()=>{
         localStorage.setItem('userinfo',JSON.stringify(userinfo))
     },[userinfo])
 
+   
+
     var value = {
         products : [products,setProducts],
+        imagePath : [imagePath,setImagePath],
         cart : [cart,setCart],
         addCart : addCart,
         removeProduct : removeProduct,

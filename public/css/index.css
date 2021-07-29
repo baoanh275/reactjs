@@ -217,6 +217,7 @@
 .home-filter__btn{
     margin-right: 12px;
     min-width: 90px;
+    margin-top: 0px !important;
 }
 
 

@@ -120,38 +120,6 @@ a:hover{
     }
 }
 
-/* Modal */
-
-/* .modal{
-    position: fixed;
-    top: 0;
-    right: 0;
-    bottom: 0;
-    left: 0;
-    display: flex;
-    animation: FadeIn linear 0.3s;
-}
-
-.modal__overlay{
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    background-color: rgba(0,0,0,0.2) ;
-    
-}
-
-.modal__body{
- 
-    --growth-from: 0.7;
-    --growth-to: 1;
-    margin: auto;
-    position: relative;
-    z-index: 1;
-    animation: growth ease-in 0.3s;
-   
-
-} */
-
 /* Button Style */
 
 .btn1{
@@ -248,9 +216,7 @@ a:hover{
     box-shadow: 1px 4px 2px rgba(0,0,0,0.05);
 }
 
-.select-input__item{
-   
-}
+
 .select-input__link{
     text-decoration: none;
     color: var(--text-color);
@@ -321,7 +287,7 @@ a:hover{
    
     top:50%;
     left: 50%;
-    max-height: 80%;
+    max-height: 90%;
     width: 33%;
     transform: translate(-50%,-50%);
     overflow: hidden;

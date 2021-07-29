@@ -4,18 +4,32 @@ import {Link} from 'react-router-dom'
 class Product extends Component {
     render() {
         var {product} = this.props;
+     
+        var data = this.props.imagePath;
+     
+        const img = new Buffer.from(data).toString("base64")
+       
+       if (product)
+       {
+
+      
         return (
     
             <Link to={`/books/${product.slug}`} className="grid__col-2-4">
                 {/* Product Item */}
                 <div className="home-product-item">
-                    <div className="home-product-item__img" style={{ backgroundImage: 'url(https://cf.shopee.vn/file/c08a9927b068dd28ebab788012e38106)' }}>
-                    </div>
+
+                    <div className="home-product-item__img" style={
+                       {
+                           backgroundImage : `URL(data:image/jpeg;base64,${img})`
+                       }
+                    }></div>
+
                     {/* Thay đổi tên */}
                     <h4 className="home-product-item__name"> {product.name}</h4>
                     <div className="home-product-item__price">
                         {/* Giá cũ */}
-                        <span className="home-product-item__price-old">300.000$</span>
+                        <span className="home-product-item__price-old">{(product.price * 1.33).toFixed(2)}$</span>
                         {/* Giá hiện tại */}
                         <span className="home-product-item__price-current">{product.price}$</span>
                     </div>
@@ -58,8 +72,13 @@ class Product extends Component {
         );
 
 
-        
     }
+        else {
+
+            return ''
+        }  
+    }
+    
 
    /*  showRatings(rating){
         var result = [];
